@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondActivity">
+
+    <android.widget.SearchView
+        android:id="@+id/second_activity_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter City Name"
+        app:iconifiedByDefault="false"
+        android:inputType="text" />
+
+    <ListView
+        android:id="@+id/second_activity_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp" />
+
+    <Button
+        android:id="@+id/save_cities_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="Save Cities" />
+</RelativeLayout>
