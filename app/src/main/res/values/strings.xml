@@ -2,4 +2,6 @@
     <string name="app_name">A1</string>
     <string name="main_activity_title">Favourite Cities</string>
     <string name="second_activity_title">Available Cities</string>
+    <string name="second_activity_edit_text_hint">Enter City Name</string>
+    <string name="string_second_activity_save_button_text">Save Cities</string>
 </resources>
