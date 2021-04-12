@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".SecondActivity">
 
-    <android.widget.SearchView
+    <EditText
         android:id="@+id/second_activity_filter"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter City Name"
-        app:iconifiedByDefault="false"
-        android:inputType="text" />
+        android:inputType="text"
+        app:iconifiedByDefault = "false"/>
+
 
     <ListView
         android:id="@+id/second_activity_list"

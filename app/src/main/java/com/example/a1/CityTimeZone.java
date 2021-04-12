@@ -82,6 +82,6 @@ public class CityTimeZone implements Parcelable {
 
     @Override
     public String toString() {
-        return name;
+        return this.getName();
     }
 }

@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,48 +23,96 @@ import java.util.ArrayList;
 
 public class SecondActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "SecondActivity";
-    ListView lv;
-    SearchView searchView;
-    ArrayList<CityTimeZone> cityTimeZoneArrayList;
-    TimeZoneAdapter timeZoneAdapter;
+    private ListView lv;
+    private Button saveCitiesButton;
+    private EditText editText;
+    private ArrayList<CityTimeZone> cityTimeZoneArrayList;
+    private TimeZoneAdapter timeZoneAdapter;
+    private ArrayList<String> timeZones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
+        setTitle(R.string.second_activity_title);
         lv = findViewById(R.id.second_activity_list);
-        Button saveCities = findViewById(R.id.save_cities_button);
-        searchView = findViewById(R.id.second_activity_filter);
+        saveCitiesButton = findViewById(R.id.save_cities_button);
+        editText = findViewById(R.id.second_activity_filter);
 
-        ArrayList<String> timeZones;
         timeZones = readFile("timezones.txt");
         displayCityTimeZoneList(timeZones);
-        lv.setTextFilterEnabled(true);
 
-        saveCities.setOnClickListener(v -> {
-            Intent resultIntent = new Intent();
-            ArrayList<CityTimeZone> checkedCities;
-            checkedCities = Helper.getCheckedCities(cityTimeZoneArrayList);
-            resultIntent.putExtra("result", checkedCities);
-            resultIntent.putExtra("Size", checkedCities.size());
-            setResult(RESULT_OK, resultIntent);
+        //Returning to Main Activity after pressing save button and using finish()
+        saveCitiesButton.setOnClickListener(v -> {
+            prepareResult();
             finish();
         });
 
-        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                SecondActivity.this.timeZoneAdapter.getFilter().filter(query);
-                return false;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                SecondActivity.this.timeZoneAdapter.getFilter().filter(newText);
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                timeZoneAdapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
+
+//        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                SecondActivity.this.timeZoneAdapter.getFilter().filter(query);
+//                Toast.makeText(getApplicationContext(), "Text Submit: " + query, Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                if (newText.equals("")) {
+//                    lv.setAdapter(timeZoneAdapter);
+//                } else {
+//                    if (filteredAdapter != null) {
+//                        filteredAdapter.clear();
+//                    }
+//
+//                    ArrayList<CityTimeZone> ctz = new ArrayList<>();
+//                    for (int i = 0; i < cityTimeZoneArrayList.size(); i++) {
+//                        if (cityTimeZoneArrayList.get(i).getName().contains(newText)) ;
+//                        {
+//                            ctz.add(new CityTimeZone(cityTimeZoneArrayList.get(i).getName(), cityTimeZoneArrayList.get(i).getTime()));
+//                        }
+//                    }
+//                    filteredAdapter = new TimeZoneAdapter(ctz, getApplicationContext());
+//                    lv.setAdapter(filteredAdapter);
+//                    Toast.makeText(getApplicationContext(), "Text Change: " + newText, Toast.LENGTH_SHORT).show();
+//                }
+//                return false;
+//            }
+//        });
+    }
+
+    private void prepareResult() {
+        Intent resultIntent = new Intent();
+        ArrayList<CityTimeZone> checkedCities;
+        checkedCities = Helper.getCheckedCities(cityTimeZoneArrayList);
+        resultIntent.putExtra("result", checkedCities);
+        resultIntent.putExtra("Size", checkedCities.size());
+        setResult(RESULT_OK, resultIntent);
+    }
+
+    //Returning to Main Activity if Back/Return is Pressed
+    @Override
+    public void onBackPressed() {
+        prepareResult();
+        super.onBackPressed();
     }
 
     private void displayCityTimeZoneList(ArrayList<String> timeZones) {

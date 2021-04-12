@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 
 
@@ -17,7 +18,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     private ListView lv;
     private Button deleteButton;
-    private ArrayList<CityTimeZone> cityTimeZoneArrayList = new ArrayList<>();
+    private Button openSecondActivity;
+    private ArrayList<CityTimeZone> cityTimeZoneArrayList;
     private TimeZoneAdapter timeZoneAdapter;
 
     @Override
@@ -25,8 +27,11 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTitle(R.string.main_activity_title);
+
+        cityTimeZoneArrayList = new ArrayList<>();
         lv = findViewById(R.id.main_activity_List);
-        Button openSecondActivity = findViewById(R.id.select_city_button);
+        openSecondActivity = findViewById(R.id.select_city_button);
         deleteButton = findViewById(R.id.remove_city_button);
 
         openSecondActivity.setOnClickListener(v -> {
