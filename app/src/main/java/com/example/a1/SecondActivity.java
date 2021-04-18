@@ -40,7 +40,8 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
         saveCitiesButton = findViewById(R.id.save_cities_button);
         editText = findViewById(R.id.second_activity_filter);
 
-        timeZones = readFile("timezones.txt");
+        //timeZones = readFile("timezones.txt");
+        timeZones = Helper.getTimeZones();
         displayCityTimeZoneList(timeZones);
 
         //Returning to Main Activity after pressing save button and using finish()
@@ -65,38 +66,6 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
 
             }
         });
-
-//        searchView.setOnQueryTextListener(new OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                SecondActivity.this.timeZoneAdapter.getFilter().filter(query);
-//                Toast.makeText(getApplicationContext(), "Text Submit: " + query, Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                if (newText.equals("")) {
-//                    lv.setAdapter(timeZoneAdapter);
-//                } else {
-//                    if (filteredAdapter != null) {
-//                        filteredAdapter.clear();
-//                    }
-//
-//                    ArrayList<CityTimeZone> ctz = new ArrayList<>();
-//                    for (int i = 0; i < cityTimeZoneArrayList.size(); i++) {
-//                        if (cityTimeZoneArrayList.get(i).getName().contains(newText)) ;
-//                        {
-//                            ctz.add(new CityTimeZone(cityTimeZoneArrayList.get(i).getName(), cityTimeZoneArrayList.get(i).getTime()));
-//                        }
-//                    }
-//                    filteredAdapter = new TimeZoneAdapter(ctz, getApplicationContext());
-//                    lv.setAdapter(filteredAdapter);
-//                    Toast.makeText(getApplicationContext(), "Text Change: " + newText, Toast.LENGTH_SHORT).show();
-//                }
-//                return false;
-//            }
-//        });
     }
 
     private void prepareResult() {
@@ -136,35 +105,5 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
             int size = checkedCities.size();
             Toast.makeText(this, "Number of cities selected: " + size, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    //Read timezones from the file
-    private ArrayList<String> readFile(String fileName) {
-        InputStream is = null;
-        BufferedReader reader = null;
-        ArrayList<String> timeZones = new ArrayList<>();
-        try {
-            AssetManager am = getAssets();
-            is = am.open(fileName);
-            reader = new BufferedReader(new InputStreamReader(is));
-            String currentLine;
-            while ((currentLine = reader.readLine()) != null) {
-                timeZones.add(currentLine);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (is != null) {
-                    is.close();
-                }
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return timeZones;
     }
 }
