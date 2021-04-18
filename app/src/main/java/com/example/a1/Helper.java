@@ -1,6 +1,5 @@
 package com.example.a1;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -13,7 +12,7 @@ public class Helper {
         ArrayList<CityTimeZone> checkedCities = new ArrayList<>();
 
         for (int i = 0; i < cityTimeZoneArrayList.size(); i++) {
-            if (cityTimeZoneArrayList.get(i).isSelected() == true) {
+            if (cityTimeZoneArrayList.get(i).isSelected()) {
                 CityTimeZone ctz = new CityTimeZone(cityTimeZoneArrayList.get(i).getName(), cityTimeZoneArrayList.get(i).getTime());
                 checkedCities.add(ctz);
             }
