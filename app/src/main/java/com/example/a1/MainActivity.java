@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                                 Toast.makeText(MainActivity.this, "The City has already been selected.", Toast.LENGTH_SHORT).show();
                             } else {
                                 cityTimeZoneArrayList.add(temp.get(i));
-                                timeZoneAdapter.add(temp.get(i));
                                 timeZoneAdapter.notifyDataSetChanged();
                             }
                         }
