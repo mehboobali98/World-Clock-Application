@@ -6,4 +6,7 @@
     <string name="string_second_activity_save_button_text">Save Cities</string>
     <string name="main_activity_delete_city_text">Delete City</string>
     <string name="main_activity_select_city_text">Select City</string>
+    <string name="load_data">Load Data</string>
+    <string name="save_data">Save Data</string>
+    <string name="delete_data">Delete Data</string>
 </resources>

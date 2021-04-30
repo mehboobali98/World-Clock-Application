@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -34,12 +36,11 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         openSecondActivity = findViewById(R.id.select_city_button);
         deleteButton = findViewById(R.id.remove_city_button);
 
-        if(savedInstanceState!=null)
-        {
+        if (savedInstanceState != null) {
             cityTimeZoneArrayList = savedInstanceState.getParcelableArrayList("cityTimeZone");
             timeZoneAdapter = new TimeZoneAdapter(cityTimeZoneArrayList, this);
             lv.setAdapter(timeZoneAdapter);
-        }else{
+        } else {
             cityTimeZoneArrayList = new ArrayList<>();
         }
 
@@ -62,6 +63,13 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 Toast.makeText(MainActivity.this, "0 Cities Selected for Deletion!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.options_menu, menu);
+        return true;
     }
 
     @Override
