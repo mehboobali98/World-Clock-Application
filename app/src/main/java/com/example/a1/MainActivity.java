@@ -1,5 +1,6 @@
 package com.example.a1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -29,10 +30,18 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         setTitle(R.string.main_activity_title);
 
-        cityTimeZoneArrayList = new ArrayList<>();
         lv = findViewById(R.id.main_activity_List);
         openSecondActivity = findViewById(R.id.select_city_button);
         deleteButton = findViewById(R.id.remove_city_button);
+
+        if(savedInstanceState!=null)
+        {
+            cityTimeZoneArrayList = savedInstanceState.getParcelableArrayList("cityTimeZone");
+            timeZoneAdapter = new TimeZoneAdapter(cityTimeZoneArrayList, this);
+            lv.setAdapter(timeZoneAdapter);
+        }else{
+            cityTimeZoneArrayList = new ArrayList<>();
+        }
 
         openSecondActivity.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SecondActivity.class);
@@ -45,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 for (int i = 0; i < ctz.size(); i++) {
                     if (cityTimeZoneArrayList.contains(ctz.get(i))) {
                         cityTimeZoneArrayList.remove(ctz.get(i));
-                        timeZoneAdapter.remove(ctz.get(i));
+                        //timeZoneAdapter.remove(ctz.get(i));
                         timeZoneAdapter.notifyDataSetChanged();
                     }
                 }
@@ -53,6 +62,12 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 Toast.makeText(MainActivity.this, "0 Cities Selected for Deletion!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("cityTimeZone", cityTimeZoneArrayList);
     }
 
     @Override
