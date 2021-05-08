@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private Button openSecondActivity;
     private ArrayList<CityTimeZone> cityTimeZoneArrayList;
     private TimeZoneAdapter timeZoneAdapter;
-    //private CityTimeZoneDbHelper cityTimeZoneDbHelper;
     private ICityTimeZoneDAO iCityTimeZoneDAO;
 
     @Override
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         lv = findViewById(R.id.main_activity_List);
         openSecondActivity = findViewById(R.id.select_city_button);
         deleteButton = findViewById(R.id.remove_city_button);
-        //cityTimeZoneDbHelper = new CityTimeZoneDbHelper(this);
         iCityTimeZoneDAO = new CityTimeZoneDbDAO(this);
 
         //To handle screen rotations
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     }
                 }
             } else {
-                Toast.makeText(MainActivity.this, "0 Cities Selected for Deletion!", Toast.LENGTH_SHORT).show();
+                showMessage("0 Cities Selected for Deletion!");
             }
         });
     }
@@ -87,70 +85,21 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.load_item: //load cities stored in the database
-                ArrayList<CityTimeZone> dbCityTimeZoneArrayList;
-                dbCityTimeZoneArrayList = iCityTimeZoneDAO.getCityTimeZones();
-                int size = dbCityTimeZoneArrayList.size();
-                if (size > 0) {
-                    showCitiesOnListView();
-                    Toast.makeText(this, size + " Items Loaded from the database.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "No Items in the database to load.", Toast.LENGTH_SHORT).show();
-                }
+                loadItem();
                 return true;
             //save selected cities into the database
             case R.id.save_item:
-                ArrayList<CityTimeZone> ctz = Helper.getCheckedCities(cityTimeZoneArrayList);
-                dbCityTimeZoneArrayList = iCityTimeZoneDAO.getCityTimeZones(); //get already existing cities in database
-                if (ctz.size() > 0) {
-                    for (int i = 0; i < ctz.size(); i++) {
-                        if (dbCityTimeZoneArrayList.contains(ctz.get(i)) == false) { //only add if it does not exist in database already
-                            boolean success = iCityTimeZoneDAO.addCityTimeZone(ctz.get(i));
-                            if (success) {
-                                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(MainActivity.this, "Selected City already exists in the Database. Cannot add.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "0 Cities Selected for Storing in Database!", Toast.LENGTH_SHORT).show();
-                }
+                saveItem();
                 return true;
             case R.id.delete_item://item delete from the database
-                ctz = Helper.getCheckedCities(cityTimeZoneArrayList);
-                dbCityTimeZoneArrayList = iCityTimeZoneDAO.getCityTimeZones(); //get already existing cities in database
-                if (ctz.size() > 0) {
-                    for (int i = 0; i < ctz.size(); i++) {
-                        //only add if it does not exist in database already
-                        if (dbCityTimeZoneArrayList.contains(ctz.get(i)) == true) {
-                            boolean success = iCityTimeZoneDAO.deleteCityTimeZone(ctz.get(i));
-                            if (success) {
-                                Toast.makeText(this, "Item Deleted Successfully", Toast.LENGTH_SHORT).show();
-                                /* reading data from database when a city is deleted*/
-                                showCitiesOnListView();
-                            } else {
-                                Toast.makeText(this, "Could not delete item with name: " + ctz.get(i).getName(), Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(MainActivity.this, "Selected City does not exist in the Database. Cannot delete.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "0 Cities Selected for Deletion in Database!", Toast.LENGTH_SHORT).show();
-                }
+                deleteItem();
                 return true;
             case R.id.delete_db:
-                int rowsDeleted = iCityTimeZoneDAO.deleteDatabase();
-                Toast.makeText(MainActivity.this, "Database dropped. Number of tuples deleted: " + rowsDeleted, Toast.LENGTH_SHORT).show();
+                deleteDb();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void showCitiesOnListView() {
-        cityTimeZoneArrayList = Helper.mergeCityTimeZoneArrayLists(cityTimeZoneArrayList, iCityTimeZoneDAO.getCityTimeZones());
-        timeZoneAdapter = new TimeZoneAdapter(cityTimeZoneArrayList, this);
-        lv.setAdapter(timeZoneAdapter);
     }
 
     @Override
@@ -167,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             if (resultCode == RESULT_OK) {
                 int size = data.getIntExtra("Size", 0);
                 if (size == 0) {
-                    Toast.makeText(MainActivity.this, "0 Cities Selected!", Toast.LENGTH_SHORT).show();
+                    showMessage("0 Cities Selected!");
                 } else {
                     if (cityTimeZoneArrayList.size() == 0) {
                         cityTimeZoneArrayList = data.getParcelableArrayListExtra("result");
@@ -177,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                         ArrayList<CityTimeZone> temp = data.getParcelableArrayListExtra("result");
                         for (int i = 0; i < temp.size(); i++) {
                             if (cityTimeZoneArrayList.contains(temp.get(i))) {
-                                Toast.makeText(MainActivity.this, "The City has already been selected.", Toast.LENGTH_SHORT).show();
+                                showMessage("The City has already been selected.");
                             } else {
                                 cityTimeZoneArrayList.add(temp.get(i));
                                 timeZoneAdapter.notifyDataSetChanged();
@@ -187,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 }
             }
             if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(MainActivity.this, "Failure!", Toast.LENGTH_SHORT).show();
+                showMessage("Failure!");
             }
         }
     }
@@ -200,7 +149,82 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             ctz.setSelected(isChecked);
             ArrayList<CityTimeZone> checkedCities = Helper.getCheckedCities(cityTimeZoneArrayList);
             int size = checkedCities.size();
-            Toast.makeText(this, "Number of cities selected: " + size, Toast.LENGTH_SHORT).show();
+            showMessage("Number of cities selected: " + size);
         }
     }
+
+    private void showMessage(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    private void showCitiesOnListView() {
+        cityTimeZoneArrayList = Helper.mergeCityTimeZoneArrayLists(cityTimeZoneArrayList, iCityTimeZoneDAO.getCityTimeZones());
+        timeZoneAdapter = new TimeZoneAdapter(cityTimeZoneArrayList, this);
+        lv.setAdapter(timeZoneAdapter);
+    }
+
+    private void loadItem() {
+        ArrayList<CityTimeZone> dbCityTimeZoneArrayList;
+        dbCityTimeZoneArrayList = iCityTimeZoneDAO.getCityTimeZones();
+        int size = dbCityTimeZoneArrayList.size();
+        if (size > 0) {
+            showCitiesOnListView();
+            showMessage(size + " Items Loaded from the database.");
+        } else {
+            showMessage("No Items in the database to load.");
+        }
+    }
+
+    private void saveItem() {
+        ArrayList<CityTimeZone> dbCityTimeZoneArrayList;
+        ArrayList<CityTimeZone> ctz = Helper.getCheckedCities(cityTimeZoneArrayList);
+        dbCityTimeZoneArrayList = iCityTimeZoneDAO.getCityTimeZones(); //get already existing cities in database
+        if (ctz.size() > 0) {
+            for (int i = 0; i < ctz.size(); i++) {
+                if (dbCityTimeZoneArrayList.contains(ctz.get(i)) == false) { //only add if it does not exist in database already
+                    boolean success = iCityTimeZoneDAO.addCityTimeZone(ctz.get(i));
+                    if (success) {
+                        showMessage("Item added to Database Successfully.");
+                    }
+                } else {
+                    showMessage("Selected City already exists in the Database. Cannot add.");
+                }
+            }
+        } else {
+            showMessage("0 Cities Selected for Storing in Database!");
+        }
+    }
+
+    private void deleteItem() {
+        ArrayList<CityTimeZone> dbCityTimeZoneArrayList;
+        ArrayList<CityTimeZone> ctz = new ArrayList<>();
+        ctz = Helper.getCheckedCities(cityTimeZoneArrayList);
+        dbCityTimeZoneArrayList = iCityTimeZoneDAO.getCityTimeZones(); //get already existing cities in database
+        if (ctz.size() > 0) {
+            for (int i = 0; i < ctz.size(); i++) {
+                //only add if it does not exist in database already
+                if (dbCityTimeZoneArrayList.contains(ctz.get(i)) == true) {
+                    boolean success = iCityTimeZoneDAO.deleteCityTimeZone(ctz.get(i));
+                    if (success) {
+                        Toast.makeText(this, "Item Deleted Successfully", Toast.LENGTH_SHORT).show();
+                        /* reading data from database when a city is deleted*/
+                        showCitiesOnListView();
+                    } else {
+                        Toast.makeText(this, "Could not delete item with name: " + ctz.get(i).getName(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Selected City does not exist in the Database. Cannot delete.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            Toast.makeText(MainActivity.this, "0 Cities Selected for Deletion in Database!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void deleteDb() {
+        int rowsDeleted = iCityTimeZoneDAO.deleteDatabase();
+        showMessage("Database dropped. Number of tuples deleted: " + rowsDeleted);
+    }
+
 }

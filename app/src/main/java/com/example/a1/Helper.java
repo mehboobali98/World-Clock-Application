@@ -7,6 +7,17 @@ import java.util.TimeZone;
 
 public class Helper {
 
+
+    public static ArrayList<CityTimeZone> mergeCityTimeZoneArrayLists(ArrayList<CityTimeZone> cityTimeZoneArrayList, ArrayList<CityTimeZone> dbCityTimeZoneArrayList) {
+        int size = dbCityTimeZoneArrayList.size();
+        for (int i = 0; i < size; i++) {
+            if (cityTimeZoneArrayList.contains(dbCityTimeZoneArrayList.get(i)) == false) {
+                cityTimeZoneArrayList.add(dbCityTimeZoneArrayList.get(i));
+            }
+        }
+        return new ArrayList<>(cityTimeZoneArrayList);
+    }
+
     //Returns Cities whose checkbox have been selected
     public static ArrayList<CityTimeZone> getCheckedCities(ArrayList<CityTimeZone> cityTimeZoneArrayList) {
         ArrayList<CityTimeZone> checkedCities = new ArrayList<>();
@@ -21,8 +32,7 @@ public class Helper {
     }
 
     //Get Available Timezones
-    public static ArrayList<String> getTimeZones()
-    {
+    public static ArrayList<String> getTimeZones() {
         Calendar calNewYork = Calendar.getInstance();
         ArrayList<String> timeZones = new ArrayList<>(Arrays.asList(TimeZone.getAvailableIDs()));
         ArrayList<String> newTimeZones = new ArrayList<>();
