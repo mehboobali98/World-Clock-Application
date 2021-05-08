@@ -13,6 +13,8 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 
@@ -21,8 +23,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private static final String TAG = "MainActivity";
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     private ListView lv;
-    private Button deleteButton;
-    private Button openSecondActivity;
+    private FloatingActionButton deleteButton;
+    private FloatingActionButton openSecondActivity;
     private ArrayList<CityTimeZone> cityTimeZoneArrayList;
     private TimeZoneAdapter timeZoneAdapter;
     private ICityTimeZoneDAO iCityTimeZoneDAO;

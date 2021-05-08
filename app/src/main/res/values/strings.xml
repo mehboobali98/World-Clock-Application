@@ -4,9 +4,11 @@
     <string name="second_activity_title">Available Cities</string>
     <string name="second_activity_edit_text_hint">Enter City Name</string>
     <string name="string_second_activity_save_button_text">Save Cities</string>
-    <string name="main_activity_delete_city_text">Delete City</string>
-    <string name="main_activity_select_city_text">Select City</string>
+    <string name="main_activity_delete_city_text">-</string>
+    <string name="main_activity_select_city_text">+</string>
     <string name="load_data">Load Data</string>
     <string name="save_data">Save Data</string>
     <string name="delete_data">Delete Data</string>
+    <string name="select_your_favorite_cities_to_observe_their_timezones">Select your favorite cities to observe their timezones</string>
+    <string name="remove_a_selected_city">Remove a selected city.</string>
 </resources>
