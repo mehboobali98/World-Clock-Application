@@ -3,18 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/load_item"
-        android:title="@string/load_data"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_menu"
+        android:title="menu"
+        app:showAsAction="always">
+        <menu>
 
-    <item
-        android:id="@+id/save_item"
-        android:title="@string/save_data"
-        app:showAsAction="never" />
+            <item
+                android:id="@+id/save_item"
+                android:icon="@drawable/ic_save"
+                android:title="@string/save_data"
+                app:showAsAction="never" />
 
-    <item
-        android:id="@+id/delete_item"
-        android:title="@string/delete_data"
-        app:showAsAction="never" />
+            <item
+                android:id="@+id/load_item"
+                android:icon="@drawable/ic_db_load"
+                android:title="@string/load_data"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/delete_item"
+                android:icon="@drawable/ic_delete"
+                android:title="@string/delete_data"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/delete_db"
+                android:icon="@drawable/ic_delete_forever"
+                android:title="@string/drop_database"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 
 </menu>

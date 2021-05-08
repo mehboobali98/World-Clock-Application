@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             cityTimeZoneArrayList = new ArrayList<>();
         }
 
-        /* reading data from database when the app launches */
-        showCitiesOnListView();
-
         //Action Listener to Open Second Activity
         openSecondActivity.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SecondActivity.class);
@@ -77,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     //Create menu options using inflater
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.options_menu, menu);
         return true;
@@ -175,12 +173,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     private void showCitiesOnListView() {
         cityTimeZoneArrayList = Helper.mergeCityTimeZoneArrayLists(cityTimeZoneArrayList, iCityTimeZoneDAO.getCityTimeZones());
-        int size = cityTimeZoneArrayList.size();
-        if (size == 0) {
-            showMessage("0 items loaded from the database. Database is empty.");
-        } else {
-            showMessage(size + " items loaded from the database.");
-        }
         timeZoneAdapter = new TimeZoneAdapter(cityTimeZoneArrayList, this);
         lv.setAdapter(timeZoneAdapter);
     }
