@@ -15,20 +15,21 @@
         android:inputType="text"
         app:iconifiedByDefault="false" />
 
-
     <ListView
         android:id="@+id/second_activity_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/save_cities_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:text="@string/string_second_activity_save_button_text"
-        android:layout_alignParentEnd="true" />
+        android:layout_margin="32dp"
+        android:contentDescription="@string/select_your_favorite_cities_to_observe_their_timezones"
+        android:src="@drawable/ic_save" />
+
 </RelativeLayout>

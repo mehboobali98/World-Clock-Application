@@ -7,18 +7,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class SecondActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "SecondActivity";
     private ListView lv;
-    private Button saveCitiesButton;
+    private FloatingActionButton saveCitiesButton;
     private EditText editText;
     private ArrayList<CityTimeZone> cityTimeZoneArrayList;
     private TimeZoneAdapter timeZoneAdapter;
