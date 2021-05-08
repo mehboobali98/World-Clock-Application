@@ -109,6 +109,20 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        //Save selected items to database in case the app is closed
+        saveItem();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Load items from database when the app is resumed
+        loadItem();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -160,6 +174,12 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     private void showCitiesOnListView() {
         cityTimeZoneArrayList = Helper.mergeCityTimeZoneArrayLists(cityTimeZoneArrayList, iCityTimeZoneDAO.getCityTimeZones());
+        int size = cityTimeZoneArrayList.size();
+        if (size == 0) {
+            showMessage("0 items loaded from the database. Database is empty.");
+        } else {
+            showMessage(size + " items loaded from the database.");
+        }
         timeZoneAdapter = new TimeZoneAdapter(cityTimeZoneArrayList, this);
         lv.setAdapter(timeZoneAdapter);
     }
@@ -207,18 +227,18 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 if (dbCityTimeZoneArrayList.contains(ctz.get(i)) == true) {
                     boolean success = iCityTimeZoneDAO.deleteCityTimeZone(ctz.get(i));
                     if (success) {
-                        Toast.makeText(this, "Item Deleted Successfully", Toast.LENGTH_SHORT).show();
+                        showMessage("Item Deleted Successfully");
                         /* reading data from database when a city is deleted*/
                         showCitiesOnListView();
                     } else {
-                        Toast.makeText(this, "Could not delete item with name: " + ctz.get(i).getName(), Toast.LENGTH_SHORT).show();
+                        showMessage("Could not delete item with name: " + ctz.get(i).getName());
                     }
                 } else {
-                    Toast.makeText(MainActivity.this, "Selected City does not exist in the Database. Cannot delete.", Toast.LENGTH_SHORT).show();
+                    showMessage("Selected City does not exist in the Database. Cannot delete.");
                 }
             }
         } else {
-            Toast.makeText(MainActivity.this, "0 Cities Selected for Deletion in Database!", Toast.LENGTH_SHORT).show();
+            showMessage("0 Cities Selected for Deletion in Database!");
         }
     }
 
