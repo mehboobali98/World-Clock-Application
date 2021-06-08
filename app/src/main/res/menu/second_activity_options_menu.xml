@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:icon="@drawable/ic_menu"
+        android:title="menu"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/download_data"
+                android:icon="@drawable/ic_download"
+                android:title="@string/download_data"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/delete_db"
+                android:icon="@drawable/ic_delete_forever"
+                android:title="@string/drop_database"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
+</menu>

@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -109,6 +112,29 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
             checkedCities = Helper.getCheckedCities(cityTimeZoneArrayList);
             int size = checkedCities.size();
             Toast.makeText(this, "Number of cities selected: " + size, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //Create menu options using inflater
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.second_activity_options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.download_data: //load cities stored in the database
+                //loadItem();
+                return true;
+            case R.id.delete_db:
+                //deleteDb();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

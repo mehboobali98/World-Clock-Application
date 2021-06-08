@@ -12,4 +12,5 @@
     <string name="select_your_favorite_cities_to_observe_their_timezones">Select your favorite cities to observe their timezones</string>
     <string name="remove_a_selected_city">Remove a selected city.</string>
     <string name="drop_database">Drop Database</string>
+    <string name="download_data">Download Data</string>
 </resources>
