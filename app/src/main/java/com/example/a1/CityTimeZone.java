@@ -8,11 +8,11 @@ public class CityTimeZone implements Parcelable {
     private String time;
     private boolean selected;
 
-    public CityTimeZone()
+    public CityTimeZone(String name)
     {
-        name = null;
-        time = null;
-        selected = false;
+        this.name = name;
+        this.time = null;
+        this.selected = false;
     }
 
     public CityTimeZone(String name, String time) {

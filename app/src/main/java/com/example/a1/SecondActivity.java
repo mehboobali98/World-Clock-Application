@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -17,7 +18,19 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class SecondActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "SecondActivity";
@@ -26,7 +39,7 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
     private EditText editText;
     private ArrayList<CityTimeZone> cityTimeZoneArrayList;
     private TimeZoneAdapter timeZoneAdapter;
-    private ArrayList<String> timeZones;
+    private ICityTimeZoneDAO iCityTimeZoneDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +47,7 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
         setContentView(R.layout.activity_second);
 
         setTitle(R.string.second_activity_title);
+        iCityTimeZoneDAO = new CityTimeZoneDbDAO(this);
         lv = findViewById(R.id.second_activity_list);
         saveCitiesButton = findViewById(R.id.save_cities_button);
         editText = findViewById(R.id.second_activity_filter);
@@ -41,12 +55,9 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
         //To handle screen rotations
         if (savedInstanceState != null) {
             cityTimeZoneArrayList = savedInstanceState.getParcelableArrayList("cityTimeZone");
-        } else {
-            timeZones = Helper.getTimeZones();
-            displayCityTimeZoneList(timeZones);
         }
-        timeZoneAdapter = new TimeZoneAdapter(cityTimeZoneArrayList, this);
-        lv.setAdapter(timeZoneAdapter);
+
+        loadDataFromDb();
 
         //Returning to Main Activity after pressing save button and using finish()
         saveCitiesButton.setOnClickListener(v -> {
@@ -94,14 +105,6 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
         super.onBackPressed();
     }
 
-    private void displayCityTimeZoneList(ArrayList<String> timeZones) {
-        cityTimeZoneArrayList = new ArrayList<>();
-        for (String s : timeZones) {
-            String[] splitStr = s.split("\\s+");
-            cityTimeZoneArrayList.add(new CityTimeZone(splitStr[0], splitStr[1]));
-        }
-    }
-
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int pos = lv.getPositionForView(buttonView);
@@ -127,14 +130,49 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.download_data: //load cities stored in the database
-                //loadItem();
+            case R.id.download_data: //start the download service
+                Intent intent = new Intent(SecondActivity.this, TimeZoneDLService.class);
+                if(!iCityTimeZoneDAO.isEmpty())
+                    deleteDb();
+                startService(intent);
+                return true;
+            case R.id.load_data_from_db:
+                if(TimeZoneDLService.isServiceRunning)
+                {
+                    showMessage("Timezone download service is still running. Please wait.");
+                }else {
+                    loadDataFromDb();
+                }
                 return true;
             case R.id.delete_db:
-                //deleteDb();
+                deleteDb();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void loadDataFromDb()
+    {
+        cityTimeZoneArrayList = iCityTimeZoneDAO.getCityTimeZones();
+        int size = cityTimeZoneArrayList.size();
+        if (size > 0) {
+            timeZoneAdapter = new TimeZoneAdapter(cityTimeZoneArrayList, this);
+            lv.setAdapter(timeZoneAdapter);
+            showMessage(size + " Items Loaded from the database.");
+        } else {
+            showMessage("No Items in the database to load.");
+        }
+    }
+
+    private void deleteDb() {
+        int rowsDeleted = iCityTimeZoneDAO.deleteDatabase();
+        cityTimeZoneArrayList.clear();
+        timeZoneAdapter.notifyDataSetChanged();
+        showMessage("Database dropped. Number of tuples deleted: " + rowsDeleted);
+    }
+    private void showMessage(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

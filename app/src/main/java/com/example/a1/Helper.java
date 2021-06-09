@@ -11,7 +11,7 @@ public class Helper {
     public static ArrayList<CityTimeZone> mergeCityTimeZoneArrayLists(ArrayList<CityTimeZone> cityTimeZoneArrayList, ArrayList<CityTimeZone> dbCityTimeZoneArrayList) {
         int size = dbCityTimeZoneArrayList.size();
         for (int i = 0; i < size; i++) {
-            if (cityTimeZoneArrayList.contains(dbCityTimeZoneArrayList.get(i)) == false) {
+            if (!cityTimeZoneArrayList.contains(dbCityTimeZoneArrayList.get(i))) {
                 cityTimeZoneArrayList.add(dbCityTimeZoneArrayList.get(i));
             }
         }
@@ -33,15 +33,27 @@ public class Helper {
 
     //Get Available Timezones
     public static ArrayList<String> getTimeZones() {
-        Calendar calNewYork = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         ArrayList<String> timeZones = new ArrayList<>(Arrays.asList(TimeZone.getAvailableIDs()));
         ArrayList<String> newTimeZones = new ArrayList<>();
+
         for (String s : timeZones) {
-            calNewYork.setTimeZone(TimeZone.getTimeZone(s));
-            String time = calNewYork.get(Calendar.HOUR_OF_DAY) + ":"
-                    + calNewYork.get(Calendar.MINUTE) + ":" + calNewYork.get(Calendar.SECOND);
+            calendar.setTimeZone(TimeZone.getTimeZone(s));
+            String time = calendar.get(Calendar.HOUR_OF_DAY) + ":"
+                    + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
             newTimeZones.add(s + " " + time);
         }
         return newTimeZones;
     }
+
+    public static String convertTimeZoneToTime(String timeZone)
+    {
+        String time;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone(timeZone));
+        time = calendar.get(Calendar.HOUR_OF_DAY) + ":"
+                + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
+        return time;
+    }
+
 }

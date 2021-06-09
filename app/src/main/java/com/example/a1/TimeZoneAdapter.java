@@ -66,7 +66,7 @@ public class TimeZoneAdapter extends ArrayAdapter<CityTimeZone> implements Filte
 
         CityTimeZone cityTimeZone = filteredTimeZoneList.get(position);
         holder.cityName.setText(cityTimeZone.getName());
-        holder.cityTime.setText(cityTimeZone.getTime());
+        holder.cityTime.setText(Helper.convertTimeZoneToTime(cityTimeZone.getName()));
         holder.checkBox.setChecked(cityTimeZone.isSelected());
         holder.checkBox.setTag(cityTimeZone);
         return v;
