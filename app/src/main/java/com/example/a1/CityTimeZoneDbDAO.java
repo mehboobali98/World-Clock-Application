@@ -3,6 +3,7 @@ package com.example.a1;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -19,12 +20,24 @@ public class CityTimeZoneDbDAO implements ICityTimeZoneDAO {
     }
 
     @Override
+    public boolean isEmpty() {
+        CityTimeZoneDbHelper dbHelper = new CityTimeZoneDbHelper(context);
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        long NoOfRows = DatabaseUtils.queryNumEntries(database, dbHelper.CITY_TIMEZONE_TABLE);
+
+        if (NoOfRows == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public boolean addCityTimeZone(CityTimeZone cityTimeZone) {
         CityTimeZoneDbHelper dbHelper = new CityTimeZoneDbHelper(context);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(dbHelper.CITY_NAME, cityTimeZone.getName());
-        cv.put(dbHelper.CITY_TIME, cityTimeZone.getTime());
         cv.put(dbHelper.SELECTED_CITY, cityTimeZone.isSelected());
 
         long row;
@@ -60,9 +73,8 @@ public class CityTimeZoneDbDAO implements ICityTimeZoneDAO {
         {
             do {
                 String cityName = cursor.getString(1);
-                String cityTime = cursor.getString(2);
-                boolean isSelected = cursor.getInt(3) == 1 ? true : false;
-                CityTimeZone cityTimeZone = new CityTimeZone(cityName, cityTime);
+                boolean isSelected = cursor.getInt(2) == 1 ? true : false;
+                CityTimeZone cityTimeZone = new CityTimeZone(cityName);
                 cityTimeZone.setSelected(isSelected);
                 cityTimeZoneArrayList.add(cityTimeZone);
             } while (cursor.moveToNext());

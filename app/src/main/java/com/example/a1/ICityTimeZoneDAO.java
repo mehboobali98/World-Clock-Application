@@ -10,4 +10,6 @@ public interface ICityTimeZoneDAO {
     ArrayList<CityTimeZone> getCityTimeZones();
 
     int deleteDatabase();
+
+    boolean isEmpty();
 }
