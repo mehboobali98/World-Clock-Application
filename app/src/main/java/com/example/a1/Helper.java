@@ -2,9 +2,12 @@ package com.example.a1;
 
 import android.util.Log;
 
+import androidx.annotation.MainThread;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 public class Helper {
@@ -58,6 +61,30 @@ public class Helper {
         String flag = new String(Character.toChars(firstChar))
                 + new String(Character.toChars(secondChar));
         return flag;
+    }
+
+    public static String getTimeDifference(String timeZone)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone(timeZone));
+        Calendar currentTime = Calendar.getInstance();
+
+        String timeDifference = null;
+        calendar.get(Calendar.DAY_OF_WEEK);
+        int hours = calendar.get(Calendar.HOUR_OF_DAY) - currentTime.get(Calendar.HOUR_OF_DAY);
+
+        if(hours == 0)
+        {
+            timeDifference = "Same Time";
+        }else if(hours > 0)
+        {
+            timeDifference = hours + " hours ahead";
+
+        }else if(hours < 0)
+        {
+            timeDifference = Math.abs(hours) + " hours behind";
+        }
+        return timeDifference;
     }
 
 

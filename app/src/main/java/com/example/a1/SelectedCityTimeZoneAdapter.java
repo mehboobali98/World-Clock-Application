@@ -58,6 +58,7 @@ public class SelectedCityTimeZoneAdapter extends ArrayAdapter<CityTimeZone> impl
             holder.cityTime = v.findViewById(R.id.time_tv_first_activity);
             holder.cityFlag = v.findViewById(R.id.city_flag_tv);
             holder.checkBox = v.findViewById(R.id.check_box_first_activity);
+            holder.timeDifference = v.findViewById(R.id.time_diff_tv);
             holder.checkBox.setOnCheckedChangeListener((CompoundButton.OnCheckedChangeListener) context);
             v.setTag(holder);
         } else {
@@ -68,6 +69,7 @@ public class SelectedCityTimeZoneAdapter extends ArrayAdapter<CityTimeZone> impl
         holder.cityName.setText(cityTimeZone.getName());
         holder.cityTime.setText(Helper.convertTimeZoneToTime(cityTimeZone.getName()));
         holder.cityFlag.setText(Helper.convertCountryCodeToFlag(cityTimeZone.getCountryCode()));
+        holder.timeDifference.setText(Helper.getTimeDifference(cityTimeZone.getName()));
         holder.checkBox.setChecked(cityTimeZone.isSelected());
         holder.checkBox.setTag(cityTimeZone);
         return v;
@@ -104,6 +106,7 @@ public class SelectedCityTimeZoneAdapter extends ArrayAdapter<CityTimeZone> impl
         public TextView cityName;
         public TextView cityTime;
         public TextView cityFlag;
+        public TextView timeDifference;
         public CheckBox checkBox;
     }
 }

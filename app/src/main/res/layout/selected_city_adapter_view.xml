@@ -23,10 +23,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
         android:layout_toEndOf="@+id/city_flag_tv"
         android:layout_toRightOf="@+id/city_flag_tv"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/time_diff_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/city_tv_first_activity"
+        android:layout_toEndOf="@+id/city_flag_tv"
+        android:layout_toRightOf="@id/city_tv_first_activity"
+        android:layout_marginLeft="15dp"
+        android:textColor="#6d6d6d" />
 
     <TextView
         android:id="@+id/time_tv_first_activity"
