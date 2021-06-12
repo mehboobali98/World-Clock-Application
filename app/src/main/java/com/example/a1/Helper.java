@@ -1,5 +1,7 @@
 package com.example.a1;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -24,36 +26,39 @@ public class Helper {
 
         for (int i = 0; i < cityTimeZoneArrayList.size(); i++) {
             if (cityTimeZoneArrayList.get(i).isSelected()) {
-                CityTimeZone ctz = new CityTimeZone(cityTimeZoneArrayList.get(i).getName(), cityTimeZoneArrayList.get(i).getTime());
+                CityTimeZone ctz = new CityTimeZone(cityTimeZoneArrayList.get(i).getName(), cityTimeZoneArrayList.get(i).getCountryCode());
+                ctz.setTime(cityTimeZoneArrayList.get(i).getTime());
+                ctz.setSelected(cityTimeZoneArrayList.get(i).isSelected());
                 checkedCities.add(ctz);
             }
         }
         return checkedCities;
     }
 
-    //Get Available Timezones
-    public static ArrayList<String> getTimeZones() {
-        Calendar calendar = Calendar.getInstance();
-        ArrayList<String> timeZones = new ArrayList<>(Arrays.asList(TimeZone.getAvailableIDs()));
-        ArrayList<String> newTimeZones = new ArrayList<>();
-
-        for (String s : timeZones) {
-            calendar.setTimeZone(TimeZone.getTimeZone(s));
-            String time = calendar.get(Calendar.HOUR_OF_DAY) + ":"
-                    + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
-            newTimeZones.add(s + " " + time);
-        }
-        return newTimeZones;
-    }
-
-    public static String convertTimeZoneToTime(String timeZone)
-    {
+    public static String convertTimeZoneToTime(String timeZone) {
         String time;
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeZone(TimeZone.getTimeZone(timeZone));
         time = calendar.get(Calendar.HOUR_OF_DAY) + ":"
                 + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
+        if (calendar.get(Calendar.AM_PM) == 0)
+            time = time + " AM";
+        else
+            time = time + " PM";
         return time;
     }
+
+    public static String convertCountryCodeToFlag(String countryCode) {
+        int flagOffset = 0x1F1E6;
+        int asciiOffset = 0x41;
+
+        int firstChar = Character.codePointAt(countryCode, 0) - asciiOffset + flagOffset;
+        int secondChar = Character.codePointAt(countryCode, 1) - asciiOffset + flagOffset;
+
+        String flag = new String(Character.toChars(firstChar))
+                + new String(Character.toChars(secondChar));
+        return flag;
+    }
+
 
 }

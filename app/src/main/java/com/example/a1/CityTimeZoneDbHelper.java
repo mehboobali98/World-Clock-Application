@@ -12,6 +12,7 @@ public class CityTimeZoneDbHelper extends SQLiteOpenHelper {
     public static final String SELECTED_CITY_TIMEZONE_TABLE = "SELECTED_CITY_TIMEZONE_TABLE";
     public static final String COLUMN_ID = "ID";
     public static final String CITY_NAME = "CITY_NAME";
+    public static final String CITY_COUNTRY_CODE = "CITY_COUNTRY_CODE";
     public static final String SELECTED_CITY = "SELECTED_CITY";
     public static final String CITYTIMEZONE_DB = "citytimezone.db";
 
@@ -21,9 +22,9 @@ public class CityTimeZoneDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE " + CITY_TIMEZONE_TABLE + " (" + COLUMN_ID + " Integer Primary Key AUTOINCREMENT, " + CITY_NAME + " text, " + SELECTED_CITY + " BOOL)";
+        String createTableStatement = "CREATE TABLE " + CITY_TIMEZONE_TABLE + " (" + COLUMN_ID + " Integer Primary Key AUTOINCREMENT, " + CITY_NAME + " text, " + CITY_COUNTRY_CODE + " text, " + SELECTED_CITY + " BOOL)";
         db.execSQL(createTableStatement);
-        createTableStatement = "CREATE TABLE " + SELECTED_CITY_TIMEZONE_TABLE + " (" + COLUMN_ID + " Integer Primary Key AUTOINCREMENT, " + CITY_NAME + " text, " + SELECTED_CITY + " BOOL)";
+        createTableStatement = "CREATE TABLE " + SELECTED_CITY_TIMEZONE_TABLE + " (" + COLUMN_ID + " Integer Primary Key AUTOINCREMENT, " + CITY_NAME + " text, " + CITY_COUNTRY_CODE + " text, " + SELECTED_CITY + " BOOL)";
         db.execSQL(createTableStatement);
     }
 

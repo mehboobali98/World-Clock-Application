@@ -15,8 +15,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 public class TimeZoneDLService extends Service {
     private ICityTimeZoneDAO iCityTimeZoneDAO;
@@ -92,7 +90,8 @@ public class TimeZoneDLService extends Service {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject timeZone = jsonArray.getJSONObject(i);
                 String zoneName = timeZone.getString("zoneName");
-                iCityTimeZoneDAO.addCityTimeZone(new CityTimeZone(zoneName));
+                String countryCode = timeZone.getString("countryCode");
+                iCityTimeZoneDAO.addCityTimeZone(new CityTimeZone(zoneName, countryCode));
             }
         }
         catch(JSONException e)

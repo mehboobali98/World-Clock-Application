@@ -6,18 +6,13 @@ import android.os.Parcelable;
 public class CityTimeZone implements Parcelable {
     private String name;
     private String time;
+    private String countryCode;
     private boolean selected;
 
-    public CityTimeZone(String name)
-    {
+    public CityTimeZone(String name, String countryCode) {
         this.name = name;
+        this.countryCode = countryCode;
         this.time = null;
-        this.selected = false;
-    }
-
-    public CityTimeZone(String name, String time) {
-        this.name = name;
-        this.time = time;
         this.selected = false;
     }
 
@@ -31,6 +26,10 @@ public class CityTimeZone implements Parcelable {
 
     public String getTime() {
         return time;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
     }
 
     public void setTime(String time) {
@@ -48,6 +47,7 @@ public class CityTimeZone implements Parcelable {
     protected CityTimeZone(Parcel in) {
         name = in.readString();
         time = in.readString();
+        countryCode = in.readString();
         selected = in.readByte() != 0;
     }
 
@@ -72,6 +72,7 @@ public class CityTimeZone implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(time);
+        dest.writeString(countryCode);
         dest.writeByte((byte) (selected ? 1 : 0));
     }
 

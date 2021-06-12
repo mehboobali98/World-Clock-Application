@@ -26,11 +26,11 @@
         android:id="@+id/remove_city_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="32dp"
         android:contentDescription="@string/remove_a_selected_city"
-        android:src="@drawable/ic_remove"
-        android:layout_alignParentStart="true" />
+        android:src="@drawable/ic_remove" />
 
 </RelativeLayout>

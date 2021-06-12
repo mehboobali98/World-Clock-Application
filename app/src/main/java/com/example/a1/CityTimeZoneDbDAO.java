@@ -38,6 +38,7 @@ public class CityTimeZoneDbDAO implements ICityTimeZoneDAO {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(dbHelper.CITY_NAME, cityTimeZone.getName());
+        cv.put(dbHelper.CITY_COUNTRY_CODE, cityTimeZone.getCountryCode());
         cv.put(dbHelper.SELECTED_CITY, cityTimeZone.isSelected());
 
         long row;
@@ -54,6 +55,7 @@ public class CityTimeZoneDbDAO implements ICityTimeZoneDAO {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(dbHelper.CITY_NAME, cityTimeZone.getName());
+        cv.put(dbHelper.CITY_COUNTRY_CODE, cityTimeZone.getCountryCode());
         cv.put(dbHelper.SELECTED_CITY, cityTimeZone.isSelected());
 
         long row;
@@ -102,8 +104,9 @@ public class CityTimeZoneDbDAO implements ICityTimeZoneDAO {
         {
             do {
                 String cityName = cursor.getString(1);
-                boolean isSelected = cursor.getInt(2) == 1 ? true : false;
-                CityTimeZone cityTimeZone = new CityTimeZone(cityName);
+                String cityCountryCode = cursor.getString(2);
+                boolean isSelected = cursor.getInt(3) == 1 ? true : false;
+                CityTimeZone cityTimeZone = new CityTimeZone(cityName, cityCountryCode);
                 cityTimeZone.setSelected(isSelected);
                 cityTimeZoneArrayList.add(cityTimeZone);
             } while (cursor.moveToNext());
@@ -126,8 +129,9 @@ public class CityTimeZoneDbDAO implements ICityTimeZoneDAO {
         {
             do {
                 String cityName = cursor.getString(1);
-                boolean isSelected = cursor.getInt(2) == 1 ? true : false;
-                CityTimeZone cityTimeZone = new CityTimeZone(cityName);
+                String cityCountryCode = cursor.getString(2);
+                boolean isSelected = cursor.getInt(3) == 1 ? true : false;
+                CityTimeZone cityTimeZone = new CityTimeZone(cityName, cityCountryCode);
                 cityTimeZone.setSelected(isSelected);
                 cityTimeZoneArrayList.add(cityTimeZone);
             } while (cursor.moveToNext());

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -17,20 +16,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+
 
 public class SecondActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "SecondActivity";
@@ -132,15 +119,14 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
         switch (item.getItemId()) {
             case R.id.download_data: //start the download service
                 Intent intent = new Intent(SecondActivity.this, TimeZoneDLService.class);
-                if(!iCityTimeZoneDAO.isEmpty())
+                if (!iCityTimeZoneDAO.isEmpty())
                     deleteDb();
                 startService(intent);
                 return true;
             case R.id.load_data_from_db:
-                if(TimeZoneDLService.isServiceRunning)
-                {
+                if (TimeZoneDLService.isServiceRunning) {
                     showMessage("Timezone download service is still running. Please wait.");
-                }else {
+                } else {
                     loadDataFromDb();
                 }
                 return true;
@@ -152,8 +138,7 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
         }
     }
 
-    private void loadDataFromDb()
-    {
+    private void loadDataFromDb() {
         cityTimeZoneArrayList = iCityTimeZoneDAO.getCityTimeZones();
         int size = cityTimeZoneArrayList.size();
         if (size > 0) {
@@ -171,6 +156,7 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
         timeZoneAdapter.notifyDataSetChanged();
         showMessage("Database dropped. Number of tuples deleted: " + rowsDeleted);
     }
+
     private void showMessage(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
