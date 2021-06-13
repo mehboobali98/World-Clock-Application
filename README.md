@@ -9,11 +9,11 @@ The android application has two main user interfaces:
 - In the first interface, the current time of the selected user cities is shown.
 
 <p align="center">
-    <img src="/Resources/first-activity.PNG">
+    <img src="/Resources/first-activity.JPG">
 </p>
 
 - In the second interface, all the available cities and their current times are shown. The information is fetched using an API.
 
 <p align="center">
-  <img src="/Resources/second-activity.PNG">
+  <img src="/Resources/second-activity.JPG">
 </p>
