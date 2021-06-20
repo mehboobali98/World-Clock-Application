@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                         selectedCityTimeZoneAdapter.notifyDataSetChanged();
                     }
                 }
-            } else {
-                showMessage("0 Cities Selected for Deletion!");
             }
         });
     }
@@ -194,9 +192,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         if (pos != ListView.INVALID_POSITION) {
             CityTimeZone ctz = cityTimeZoneArrayList.get(pos);
             ctz.setSelected(isChecked);
-            ArrayList<CityTimeZone> checkedCities = Helper.getCheckedCities(cityTimeZoneArrayList);
-            int size = checkedCities.size();
-            showMessage("Number of cities selected: " + size);
         }
     }
 

@@ -98,10 +98,6 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
         if (pos != ListView.INVALID_POSITION) {
             CityTimeZone ctz = cityTimeZoneArrayList.get(pos);
             ctz.setSelected(isChecked);
-            ArrayList<CityTimeZone> checkedCities;
-            checkedCities = Helper.getCheckedCities(cityTimeZoneArrayList);
-            int size = checkedCities.size();
-            Toast.makeText(this, "Number of cities selected: " + size, Toast.LENGTH_SHORT).show();
         }
     }
 
