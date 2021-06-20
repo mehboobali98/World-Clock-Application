@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,8 +16,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
@@ -31,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private ArrayList<CityTimeZone> cityTimeZoneArrayList;
     private SelectedCityTimeZoneAdapter selectedCityTimeZoneAdapter;
     private ICityTimeZoneDAO iCityTimeZoneDAO;
-    private Handler handler;
     private Thread thread;
     private int delay;
 
@@ -46,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         openSecondActivity = findViewById(R.id.select_city_button);
         deleteButton = findViewById(R.id.remove_city_button);
         iCityTimeZoneDAO = new CityTimeZoneDbDAO(this);
-        handler = new Handler();
         delay = 1000; //1000 ms = 1 sec
 
         //To handle screen rotations

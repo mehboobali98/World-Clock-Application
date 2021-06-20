@@ -38,7 +38,6 @@ public class TimeZoneDLService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("MyServiceTag", "Download Service Started.");
         downloadData();
-        stopSelf();
         return Service.START_REDELIVER_INTENT;
     }
 

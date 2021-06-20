@@ -85,7 +85,6 @@ public class CityTimeZone implements Parcelable {
             return false;
         }
         CityTimeZone ctz = (CityTimeZone) obj;
-        //return name.equals(ctz.name) && time.equals(ctz.time);
         return name.equals(ctz.name);
     }
 
