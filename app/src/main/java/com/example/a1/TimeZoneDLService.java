@@ -98,4 +98,12 @@ public class TimeZoneDLService extends Service {
             e.printStackTrace();
         }
     }
+
+    public static void setIsServiceRunning(boolean isServiceRunning) {
+        TimeZoneDLService.isServiceRunning = isServiceRunning;
+    }
+
+    public static boolean isIsServiceRunning() {
+        return isServiceRunning;
+    }
 }

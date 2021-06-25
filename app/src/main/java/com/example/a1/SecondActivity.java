@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -112,16 +114,18 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent = new Intent(SecondActivity.this, TimeZoneDLService.class);
         switch (item.getItemId()) {
             case R.id.download_data: //start the download service
-                Intent intent = new Intent(SecondActivity.this, TimeZoneDLService.class);
                 if (!iCityTimeZoneDAO.isEmpty())
                     deleteDb();
                 startService(intent);
                 return true;
             case R.id.load_data_from_db:
-                if (TimeZoneDLService.isServiceRunning) {
+                if (TimeZoneDLService.isIsServiceRunning()) {
                     showMessage("Timezone download service is still running. Please wait.");
+                    stopService(intent);
+                    TimeZoneDLService.setIsServiceRunning(false);
                 } else {
                     loadDataFromDb();
                 }
