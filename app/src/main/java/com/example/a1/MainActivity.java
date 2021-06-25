@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -53,15 +54,21 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             lv.setAdapter(selectedCityTimeZoneAdapter);
         } else {
             cityTimeZoneArrayList = new ArrayList<>();
+            selectedCityTimeZoneAdapter = new SelectedCityTimeZoneAdapter(cityTimeZoneArrayList, this);
+            lv.setAdapter(selectedCityTimeZoneAdapter);
         }
 
+
+        Log.d("myHandler", "Before handler");
         //Handler for main thread
         handler = new Handler(getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
-                Bundle bundle = msg.getData();
-                bundle.getParcelableArrayList("Selected cities");
-                selectedCityTimeZoneAdapter.notifyDataSetChanged();
+                if (msg.getData().isEmpty()==false) {
+                    Bundle bundle = msg.getData();
+                    bundle.getParcelableArrayList("Selected cities");
+                    selectedCityTimeZoneAdapter.notifyDataSetChanged();
+                }
             }
         };
 
