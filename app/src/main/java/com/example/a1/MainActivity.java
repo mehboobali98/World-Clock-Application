@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private ArrayList<CityTimeZone> cityTimeZoneArrayList;
     private SelectedCityTimeZoneAdapter selectedCityTimeZoneAdapter;
     private ICityTimeZoneDAO iCityTimeZoneDAO;
+    private Handler handler;
     private Thread thread;
     private int delay;
 
@@ -53,6 +56,16 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             cityTimeZoneArrayList = new ArrayList<>();
         }
 
+        //Handler for main thread
+        handler = new Handler(getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                Bundle bundle = msg.getData();
+                bundle.getParcelableArrayList("Selected cities");
+                selectedCityTimeZoneAdapter.notifyDataSetChanged();
+            }
+        };
+
         //Updating Times
         thread = new Thread() {
             @Override
@@ -60,7 +73,12 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 try {
                     while (!isInterrupted()) {
                         Thread.sleep(delay);
-                        runOnUiThread(() -> updateTime());
+                        updateTime();
+                        Message message = Message.obtain();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArrayList("Selected cities", cityTimeZoneArrayList);
+                        message.setData(bundle);
+                        handler.sendMessage(message);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -123,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         for (int i = 0; i < size; i++) {
             String timeZone = cityTimeZoneArrayList.get(i).getName();
             cityTimeZoneArrayList.get(i).setTime(Helper.convertTimeZoneToTime(timeZone));
-            selectedCityTimeZoneAdapter.notifyDataSetChanged();
         }
     }
 
