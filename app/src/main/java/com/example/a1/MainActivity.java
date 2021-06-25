@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private ArrayList<CityTimeZone> cityTimeZoneArrayList;
     private SelectedCityTimeZoneAdapter selectedCityTimeZoneAdapter;
     private ICityTimeZoneDAO iCityTimeZoneDAO;
-    private Handler handler;
     private Thread thread;
     private int delay;
 
@@ -54,23 +53,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             lv.setAdapter(selectedCityTimeZoneAdapter);
         } else {
             cityTimeZoneArrayList = new ArrayList<>();
-            selectedCityTimeZoneAdapter = new SelectedCityTimeZoneAdapter(cityTimeZoneArrayList, this);
-            lv.setAdapter(selectedCityTimeZoneAdapter);
         }
-
-
-        Log.d("myHandler", "Before handler");
-        //Handler for main thread
-        handler = new Handler(getMainLooper()) {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                if (msg.getData().isEmpty()==false) {
-                    Bundle bundle = msg.getData();
-                    bundle.getParcelableArrayList("Selected cities");
-                    selectedCityTimeZoneAdapter.notifyDataSetChanged();
-                }
-            }
-        };
 
         //Updating Times
         thread = new Thread() {
@@ -80,11 +63,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     while (!isInterrupted()) {
                         Thread.sleep(delay);
                         updateTime();
-                        Message message = Message.obtain();
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelableArrayList("Selected cities", cityTimeZoneArrayList);
-                        message.setData(bundle);
-                        handler.sendMessage(message);
+                        runOnUiThread(() -> selectedCityTimeZoneAdapter.notifyDataSetChanged());
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
