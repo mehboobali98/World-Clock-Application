@@ -2,8 +2,12 @@ package com.example.a1;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 
@@ -27,6 +32,8 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
     private ArrayList<CityTimeZone> cityTimeZoneArrayList;
     private TimeZoneAdapter timeZoneAdapter;
     private ICityTimeZoneDAO iCityTimeZoneDAO;
+    private BroadcastReceiver broadcastReceiver;
+    private LocalBroadcastManager localBroadcastManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,17 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
         lv = findViewById(R.id.second_activity_list);
         saveCitiesButton = findViewById(R.id.save_cities_button);
         editText = findViewById(R.id.second_activity_filter);
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadDataFromDb();
+            }
+        };
+
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter("DOWNLOAD_COMPLETED");
+        localBroadcastManager.registerReceiver(broadcastReceiver, intentFilter);
 
         //To handle screen rotations
         if (savedInstanceState != null) {
@@ -68,6 +86,12 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        localBroadcastManager.unregisterReceiver(broadcastReceiver);
+        super.onDestroy();
     }
 
     @Override
