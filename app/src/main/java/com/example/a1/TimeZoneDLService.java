@@ -48,16 +48,14 @@ public class TimeZoneDLService extends Service {
     }
 
     //download data from api
-    private void downloadData()
-    {
+    private void downloadData() {
         Thread thread = new Thread(() -> load());
         thread.start();
     }
 
-    private void load()
-    {
+    private void load() {
         String line;
-        try{
+        try {
             URL url = new URL("https://api.timezonedb.com/v2.1/list-time-zone?key=6099QLC511G1&format=json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setReadTimeout(10000);
@@ -68,21 +66,21 @@ public class TimeZoneDLService extends Service {
             connection.connect();
 
             StringBuilder content = new StringBuilder();
-            BufferedReader reader = new BufferedReader( new InputStreamReader( connection.getInputStream() ) );
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-            while( (line = reader.readLine()) != null ){
+            while ((line = reader.readLine()) != null) {
                 content.append(line);
             }
 
             line = content.toString();
             parse(line);
-        } catch(Exception ex) {
+            stopService();
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private void parse(String line)
-    {
+    private void parse(String line) {
         try {
             JSONObject jsonObject = new JSONObject(line);
             JSONArray jsonArray = (JSONArray) jsonObject.get("zones");
@@ -92,11 +90,13 @@ public class TimeZoneDLService extends Service {
                 String countryCode = timeZone.getString("countryCode");
                 iCityTimeZoneDAO.addCityTimeZone(new CityTimeZone(zoneName, countryCode));
             }
-        }
-        catch(JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void stopService() {
+        stopSelf();
     }
 
     public static void setIsServiceRunning(boolean isServiceRunning) {
