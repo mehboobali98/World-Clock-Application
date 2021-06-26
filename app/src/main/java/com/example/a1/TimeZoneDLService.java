@@ -19,20 +19,17 @@ import java.net.URL;
 
 public class TimeZoneDLService extends Service {
     private ICityTimeZoneDAO iCityTimeZoneDAO;
-    static boolean isServiceRunning;
 
     @Override
     public void onCreate() {
         super.onCreate();
         iCityTimeZoneDAO = new CityTimeZoneDbDAO(this);
-        isServiceRunning = true;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d("MyServiceTag", "Download Service Closed.");
-        isServiceRunning = false;
     }
 
     @Override
@@ -105,14 +102,5 @@ public class TimeZoneDLService extends Service {
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
         Intent intent = new Intent("DOWNLOAD_COMPLETED");
         localBroadcastManager.sendBroadcast(intent);
-    }
-
-
-    public static void setIsServiceRunning(boolean isServiceRunning) {
-        TimeZoneDLService.isServiceRunning = isServiceRunning;
-    }
-
-    public static boolean isIsServiceRunning() {
-        return isServiceRunning;
     }
 }
