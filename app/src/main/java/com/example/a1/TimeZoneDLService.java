@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,6 +75,7 @@ public class TimeZoneDLService extends Service {
 
             line = content.toString();
             parse(line);
+            sendBroadcast();
             stopService();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -98,6 +100,13 @@ public class TimeZoneDLService extends Service {
     private void stopService() {
         stopSelf();
     }
+
+    private void sendBroadcast() {
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        Intent intent = new Intent("DOWNLOAD_COMPLETED");
+        localBroadcastManager.sendBroadcast(intent);
+    }
+
 
     public static void setIsServiceRunning(boolean isServiceRunning) {
         TimeZoneDLService.isServiceRunning = isServiceRunning;
