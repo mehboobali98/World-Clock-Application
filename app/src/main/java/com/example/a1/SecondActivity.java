@@ -143,15 +143,6 @@ public class SecondActivity extends AppCompatActivity implements CompoundButton.
                     deleteDb();
                 startService(intent);
                 return true;
-            case R.id.load_data_from_db:
-                if (TimeZoneDLService.isIsServiceRunning()) {
-                    showMessage("Timezone download service is still running. Please wait.");
-                    stopService(intent);
-                    TimeZoneDLService.setIsServiceRunning(false);
-                } else {
-                    loadDataFromDb();
-                }
-                return true;
             case R.id.delete_db:
                 deleteDb();
                 return true;

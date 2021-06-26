@@ -14,13 +14,6 @@
                 app:showAsAction="never" />
 
             <item
-                android:id="@+id/load_data_from_db"
-                android:icon="@drawable/ic_db_load"
-                android:title="Load Data"
-                app:showAsAction="never"
-                />
-
-            <item
                 android:id="@+id/delete_db"
                 android:icon="@drawable/ic_delete_forever"
                 android:title="@string/drop_database"
