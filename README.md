@@ -20,7 +20,7 @@ The android application has two main user interfaces:
 
 # Implementation Details
 
-- The current time of the cities is fetched using the <a href="https://timezonedb.com/references/list-time-zone">Timezonedb</a> API. It is free-to-use.
+- The current time of the cities is fetched using the <a href="https://timezonedb.com/references/list-time-zone">Timezonedb</a> API. It is free-to-use. However, you need to create an account to get the API key.
 
 - The current times and country codes are fetched using the above API in a started service. The data is then stored in the SQLite database.
 
