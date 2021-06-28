@@ -43,4 +43,4 @@ The android application has two main user interfaces:
 
 - Improve UI
 - Use a JobSchedular Service.
-- Upload APK file.
+- Use Content Provider
